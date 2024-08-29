@@ -10,7 +10,7 @@ using System.Text.Json;
 using Microsoft.SemanticKernel.ChatCompletion;
 
 namespace Microsoft.SemanticKernel.Diagnostics;
-
+#pragma warning disable SKEXP0001
 /// <summary>
 /// Model diagnostics helper class that provides a set of methods to trace model activities with the OTel semantic conventions.
 /// This class contains experimental features and may change in the future.

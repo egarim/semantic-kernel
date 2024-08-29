@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace Microsoft.SemanticKernel.Data;
-
+#pragma warning disable SKEXP0001
 /// <summary>
 /// Contains helpers for reading vector store model properties and their attributes.
 /// </summary>
