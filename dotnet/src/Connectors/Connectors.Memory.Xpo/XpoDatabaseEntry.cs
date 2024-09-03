@@ -39,7 +39,7 @@ public class XpoDatabaseEntry : XPLiteObject
         set => this.SetPropertyValue(nameof(this.MetadataString), ref this._metadataString, value);
     }
 
-    [Size(SizeAttribute.DefaultStringMappingFieldSize)]
+    [Size(SizeAttribute.Unlimited)]
     public string EmbeddingString
     {
         get => this._embeddingString;

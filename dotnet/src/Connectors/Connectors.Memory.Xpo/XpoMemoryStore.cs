@@ -16,17 +16,17 @@ using Microsoft.SemanticKernel.Text;
 namespace Microsoft.SemanticKernel.Connectors.Xpo;
 #pragma warning disable SKEXP0001
 /// <summary>
-/// An implementation of <see cref="IMemoryStore"/> backed by a SQLite database.
+/// An implementation of <see cref="IMemoryStore"/> backed by a XPO database.
 /// </summary>
-/// <remarks>The data is saved to a database file, specified in the constructor.
-/// The data persists between subsequent instances. Only one instance may access the file at a time.
-/// The caller is responsible for deleting the file.</remarks>
+/// <remarks>The data is saved to a database, specified in the constructor.
+/// The data persists between subsequent instances.
+/// </remarks>
 public class XpoMemoryStore : IMemoryStore, IDisposable
 {
     /// <summary>
-    /// Connect a Sqlite database
+    /// Connect a XPO database
     /// </summary>
-    /// <param name="cnx">Path to the database file. If file does not exist, it will be created.</param>
+    /// <param name="cnx">The XPO connection string. If database does not exist, it will be created.</param>
     /// <param name="cancellationToken">The <see cref="CancellationToken"/> to monitor for cancellation requests. The default is <see cref="CancellationToken.None"/>.</param>
     public static async Task<XpoMemoryStore> ConnectAsync(string cnx,
         CancellationToken cancellationToken = default)

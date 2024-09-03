@@ -1,35 +1,22 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
+using DevExpress.Xpo.DB;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.AzureAISearch;
-using Microsoft.SemanticKernel.Connectors.Chroma;
-using Microsoft.SemanticKernel.Connectors.DuckDB;
-using Microsoft.SemanticKernel.Connectors.Kusto;
-using Microsoft.SemanticKernel.Connectors.MongoDB;
-using Microsoft.SemanticKernel.Connectors.OpenAI;
-using Microsoft.SemanticKernel.Connectors.Pinecone;
-using Microsoft.SemanticKernel.Connectors.Postgres;
-using Microsoft.SemanticKernel.Connectors.Qdrant;
-using Microsoft.SemanticKernel.Connectors.Redis;
-using Microsoft.SemanticKernel.Connectors.Sqlite;
-using Microsoft.SemanticKernel.Connectors.Weaviate;
+
 using Microsoft.SemanticKernel.Connectors.Xpo;
 using Microsoft.SemanticKernel.Memory;
 using Microsoft.SemanticKernel.Plugins.Memory;
-using Npgsql;
-using StackExchange.Redis;
 
-namespace Memory;
 
-public class TextMemoryPlugin_MultipleMemoryStore(ITestOutputHelper output) : BaseTest(output)
+namespace XpoMemoryDemo;
+
+internal class Program
 {
-    private const string MemoryCollectionName = "aboutMe";
 
-    [Theory]
-    [InlineData("Volatile")]
-    //[InlineData("AzureAISearch")]
-    public async Task RunAsync(string provider)
+    private static async Task Main(string[] args)
     {
+#pragma warning disable IDE0039
+
         // Volatile Memory Store - an in-memory store that is not persisted
         //IMemoryStore store = provider switch
         //{
@@ -38,141 +25,27 @@ public class TextMemoryPlugin_MultipleMemoryStore(ITestOutputHelper output) : Ba
         //};
 
         // Xpo Memory Store - using InMemoryDataStore, an in-memory store that is not persisted
-        XpoMemoryStore store = await XpoMemoryStore.ConnectAsync(DevExpress.Xpo.DB.InMemoryDataStore.GetConnectionStringInMemory(true));
+        string cnx = DevExpress.Xpo.DB.InMemoryDataStore.GetConnectionStringInMemory(true);
+        cnx = "Integrated Security=SSPI;Pooling=false;Data Source=(localdb)\\mssqllocaldb;Initial Catalog=XpoKernelMemory";
+        XpoMemoryStore store = await XpoMemoryStore.ConnectAsync(cnx);
 
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-        // INSTRUCTIONS: uncomment one of the following lines to select a different memory store to use. //
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-        // Sqlite Memory Store - a file-based store that persists data in a Sqlite database
-        // store = await CreateSampleSqliteMemoryStoreAsync();
-
-        // DuckDB Memory Store - a file-based store that persists data in a DuckDB database
-        // store = await CreateSampleDuckDbMemoryStoreAsync();
-
-        // MongoDB Memory Store - a store that persists data in a MongoDB database
-        // store = CreateSampleMongoDBMemoryStore();
-
-        // Azure AI Search Memory Store - a store that persists data in a hosted Azure AI Search database
-        // store = CreateSampleAzureAISearchMemoryStore();
-
-        // Qdrant Memory Store - a store that persists data in a local or remote Qdrant database
-        // store = CreateSampleQdrantMemoryStore();
-
-        // Chroma Memory Store
-        // store = CreateSampleChromaMemoryStore();
-
-        // Pinecone Memory Store - a store that persists data in a hosted Pinecone database
-        // store = CreateSamplePineconeMemoryStore();
-
-        // Weaviate Memory Store
-        // store = CreateSampleWeaviateMemoryStore();
-
-        // Redis Memory Store
-        // store = await CreateSampleRedisMemoryStoreAsync();
-
-        // Postgres Memory Store
-        // store = CreateSamplePostgresMemoryStore();
-
-        // Kusto Memory Store
-        // store = CreateSampleKustoMemoryStore();
-
-        await RunWithStoreAsync(store);
-    }
-
-    private async Task<IMemoryStore> CreateSampleSqliteMemoryStoreAsync()
-    {
-        IMemoryStore store = await SqliteMemoryStore.ConnectAsync("memories.sqlite");
-        return store;
-    }
-
-    private async Task<IMemoryStore> CreateSampleDuckDbMemoryStoreAsync()
-    {
-        IMemoryStore store = await DuckDBMemoryStore.ConnectAsync("memories.duckdb", 1536);
-        return store;
-    }
-
-    private IMemoryStore CreateSampleMongoDBMemoryStore()
-    {
-        IMemoryStore store = new MongoDBMemoryStore(TestConfiguration.MongoDB.ConnectionString, "memoryPluginExample");
-        return store;
-    }
-
-    private IMemoryStore CreateSampleAzureAISearchMemoryStore()
-    {
-        IMemoryStore store = new AzureAISearchMemoryStore(TestConfiguration.AzureAISearch.Endpoint, TestConfiguration.AzureAISearch.ApiKey);
-        return store;
-    }
-
-    private IMemoryStore CreateSampleChromaMemoryStore()
-    {
-        IMemoryStore store = new ChromaMemoryStore(TestConfiguration.Chroma.Endpoint, this.LoggerFactory);
-        return store;
-    }
-
-    private IMemoryStore CreateSampleQdrantMemoryStore()
-    {
-        IMemoryStore store = new QdrantMemoryStore(TestConfiguration.Qdrant.Endpoint, 1536, this.LoggerFactory);
-        return store;
-    }
-
-    private IMemoryStore CreateSamplePineconeMemoryStore()
-    {
-        IMemoryStore store = new PineconeMemoryStore(TestConfiguration.Pinecone.Environment, TestConfiguration.Pinecone.ApiKey, this.LoggerFactory);
-        return store;
-    }
-
-    private IMemoryStore CreateSampleWeaviateMemoryStore()
-    {
-        IMemoryStore store = new WeaviateMemoryStore(TestConfiguration.Weaviate.Endpoint, TestConfiguration.Weaviate.ApiKey);
-        return store;
-    }
-
-    private async Task<IMemoryStore> CreateSampleRedisMemoryStoreAsync()
-    {
-        string configuration = TestConfiguration.Redis.Configuration;
-        ConnectionMultiplexer connectionMultiplexer = await ConnectionMultiplexer.ConnectAsync(configuration);
-        IDatabase database = connectionMultiplexer.GetDatabase();
-        IMemoryStore store = new RedisMemoryStore(database, vectorSize: 1536);
-        return store;
-    }
-
-    private static IMemoryStore CreateSamplePostgresMemoryStore()
-    {
-        NpgsqlDataSourceBuilder dataSourceBuilder = new(TestConfiguration.Postgres.ConnectionString);
-        dataSourceBuilder.UseVector();
-        NpgsqlDataSource dataSource = dataSourceBuilder.Build();
-        IMemoryStore store = new PostgresMemoryStore(dataSource, vectorSize: 1536, schema: "public");
-        return store;
-    }
-
-    private static IMemoryStore CreateSampleKustoMemoryStore()
-    {
-        var connectionString = new Kusto.Data.KustoConnectionStringBuilder(TestConfiguration.Kusto.ConnectionString).WithAadUserPromptAuthentication();
-        IMemoryStore store = new KustoMemoryStore(connectionString, "MyDatabase");
-        return store;
-    }
-
-    private async Task RunWithStoreAsync(IMemoryStore memoryStore)
-    {
+        var EmbeddingModelId = "text-embedding-3-small";
+        var ChatModelId = "gpt-4o";
         //var kernel = Kernel.CreateBuilder()
         //    .AddOpenAIChatCompletion(TestConfiguration.OpenAI.ChatModelId, TestConfiguration.OpenAI.ApiKey)
-        //    .AddOpenAITextEmbeddingGeneration(TestConfiguration.OpenAI.EmbeddingModelId, TestConfiguration.OpenAI.ApiKey)
+        //    .AddOpenAITextEmbeddingGeneration(EmbeddingModelId, TestConfiguration.OpenAI.ApiKey)
         //    .Build();
 
-        string? apiKey = Environment.GetEnvironmentVariable("OpenAiTestKey", EnvironmentVariableTarget.Machine);
+#pragma warning disable IDE0039
+        var GetKey = () => Environment.GetEnvironmentVariable("OpenAiTestKey", EnvironmentVariableTarget.Machine);
         var kernel = Kernel.CreateBuilder()
-           .AddOpenAIChatCompletion(TestConfiguration.OpenAI.ChatModelId, apiKey)
-           .AddOpenAITextEmbeddingGeneration(TestConfiguration.OpenAI.EmbeddingModelId, TestConfiguration.OpenAI.ApiKey)
+           .AddOpenAIChatCompletion(ChatModelId, GetKey.Invoke())
+           .AddOpenAITextEmbeddingGeneration(EmbeddingModelId, GetKey.Invoke())
            .Build();
 
         // Create an embedding generator to use for semantic memory.
-        //var embeddingGenerator = new OpenAITextEmbeddingGenerationService(TestConfiguration.OpenAI.EmbeddingModelId, TestConfiguration.OpenAI.ApiKey);
-
-
-        
-        var embeddingGenerator = new OpenAITextEmbeddingGenerationService(TestConfiguration.OpenAI.EmbeddingModelId, apiKey);
-
+        //var embeddingGenerator = new OpenAITextEmbeddingGenerationService(EmbeddingModelId, TestConfiguration.OpenAI.ApiKey);
+        var embeddingGenerator = new OpenAITextEmbeddingGenerationService(EmbeddingModelId, GetKey.Invoke());
 
         // The combination of the text embedding generator and the memory store makes up the 'SemanticTextMemory' object used to
         // store and retrieve memories.
@@ -291,18 +164,18 @@ public class TextMemoryPlugin_MultipleMemoryStore(ITestOutputHelper output) : Ba
         Console.WriteLine("== PART 4: Using TextMemoryPlugin 'Recall' function in a Prompt Function ==");
 
         // Build a prompt function that uses memory to find facts
-        const string RecallFunctionDefinition = @"
-Consider only the facts below when answering questions:
+            const string RecallFunctionDefinition = @"
+            Consider only the facts below when answering questions:
 
-BEGIN FACTS
-About me: {{recall 'where did I grow up?'}}
-About me: {{recall 'where do I live now?'}}
-END FACTS
+            BEGIN FACTS
+            About me: {{recall 'where did I grow up?'}}
+            About me: {{recall 'where do I live now?'}}
+            END FACTS
 
-Question: {{$input}}
+            Question: {{$input}}
 
-Answer:
-";
+            Answer:
+            ";
 
         var aboutMeOracle = kernel.CreateFunctionFromPrompt(RecallFunctionDefinition, new OpenAIPromptExecutionSettings() { MaxTokens = 100 });
 
@@ -347,5 +220,10 @@ Answer:
         {
             Console.WriteLine(collection);
         }
+    
+
+
+
+    Console.WriteLine("Hello, World!");
     }
 }

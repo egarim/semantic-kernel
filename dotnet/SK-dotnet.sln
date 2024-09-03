@@ -326,7 +326,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIModelRouter", "samples\De
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectors.AzureCosmosDBNoSQL.UnitTests", "src\Connectors\Connectors.AzureCosmosDBNoSQL.UnitTests\Connectors.AzureCosmosDBNoSQL.UnitTests.csproj", "{385A8FE5-87E2-4458-AE09-35E10BD2E67F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connectors.Memory.Xpo", "src\Connectors\Connectors.Memory.Xpo\Connectors.Memory.Xpo.csproj", "{B2F02FB7-CCC2-4BBD-869E-238E31F893FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectors.Memory.Xpo", "src\Connectors\Connectors.Memory.Xpo\Connectors.Memory.Xpo.csproj", "{B2F02FB7-CCC2-4BBD-869E-238E31F893FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
