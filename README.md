@@ -1,4 +1,59 @@
-# Semantic Kernel
+# Semantic Kernel XPO Fork
+
+This is a fork of the official [Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/overview/). Please note that this code is experimental, as Semantic Kernel is still under active development.
+
+The goal of this fork is to create a DevExpress XPO-compatible memory store.[XPO](https://www.devexpress.com/Products/NET/ORM/#:~:text=eXpress%20Persistent%20Objects%20(XPO)%20is%20an) is a free to use ORM by [DevExpress](https://www.devexpress.com/) that supports [multiple databases](https://docs.devexpress.com/XPO/2114/product-information/database-systems-supported-by-xpo). You can check the implementation of the memory store here:
+
+- [Xpo Memory Store](dotnet/src/Connectors/Connectors.Memory.Xpo/XpoMemoryStore.cs)
+- [Xpo Database Entry](dotnet/src/Connectors/Connectors.Memory.Xpo/XpoDatabaseEntry.cs)
+- [Xpo Database](dotnet/src/Connectors/Connectors.Memory.Xpo/XpoDatabase.cs)
+
+I've extended the example [Text Memory Plugin with Multiple Memory Stores](dotnet/samples/Concepts/Memory/TextMemoryPlugin_MultipleMemoryStore.cs) to include XPO. Additionally, I’ve added a new pure XPO example: [Text Memory Plugin with Xpo Memory Store](dotnet/samples/Concepts/Memory/TextMemoryPlugin_XpoMemoryStore.cs).
+
+### Running the Example
+
+To run these examples, you'll need a valid OpenAI API key and a valid [XPO connection string](https://www.jocheojeda.com/2018/09/27/xpo-post-4-connection-strings/).
+
+### Creating an Instance of the XPO Memory Store
+
+Here's how you can create an instance of the XPO memory store:
+
+```csharp
+// Xpo Memory Store - using InMemoryDataStore, an in-memory store that is not persisted
+string cnx = DevExpress.Xpo.DB.InMemoryDataStore.GetConnectionStringInMemory(true);
+cnx = "Integrated Security=SSPI;Pooling=false;Data Source=(localdb)\\mssqllocaldb;Initial Catalog=XpoKernelMemory";
+XpoMemoryStore store = await XpoMemoryStore.ConnectAsync(cnx);
+```
+
+The examples retrieve the OpenAI API key from the environment variable OpenAiTestKey. If you prefer, you can modify this to use a different method to obtain the key:
+
+```csharp
+
+ var GetKey = () => Environment.GetEnvironmentVariable("OpenAiTestKey", EnvironmentVariableTarget.Machine);
+
+```
+### The nuget package
+ Microsoft.SemanticKernel.Connectors is a [reserverd nuget id prefix](https://learn.microsoft.com/en-us/nuget/nuget-org/nuget-org-faq#how-do-i-deal-with-a-package-owner-who-is-violating-my-software-license) Which means that I can't publish the package to nuget.org. You can build the package yourself by running the following command in the root directory of the project:
+
+ For windows
+
+```<language>
+
+ build.cmd
+
+```
+
+For linux and macos
+
+```<language>
+   
+ build.cmd
+
+```
+
+You can also download the nuget from here 
+
+https://github.com/egarim/semantic-kernel/releases/tag/1.17.2-alpha
 
 ## Status
 
