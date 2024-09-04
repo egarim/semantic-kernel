@@ -41,12 +41,7 @@ internal sealed class XpoDatabase
         };
         await unitOfWork.CommitChangesAsync(cancellationToken).ConfigureAwait(false);
 
-        //using SqliteCommand cmd = conn.CreateCommand();
-        //cmd.CommandText = $@"
-        //     INSERT INTO {TableName}(collection)
-        //     VALUES(@collection); ";
-        //cmd.Parameters.AddWithValue("@collection", collectionName);
-        //await cmd.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
+
     }
 
     public async Task UpdateAsync(IDataLayer conn,
