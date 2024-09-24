@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
+    <Deterministic>false</Deterministic>
+    <AssemblyVersion>1.0.*</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Configurations>Debug;Release;EasyTest</Configurations>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Model.DesignedDiffs.xafml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model.DesignedDiffs.xafml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="DevExpress.ExpressApp" />
+    <PackageReference Include="DevExpress.ExpressApp.Chart" />
+    <PackageReference Include="DevExpress.ExpressApp.CloneObject.Xpo" />
+    <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" />
+    <PackageReference Include="DevExpress.ExpressApp.ConditionalAppearance" />
+    <PackageReference Include="DevExpress.ExpressApp.Dashboards" />
+    <PackageReference Include="DevExpress.ExpressApp.Kpi" />
+    <PackageReference Include="DevExpress.ExpressApp.Notifications" />
+    <PackageReference Include="DevExpress.ExpressApp.Objects" />
+    <PackageReference Include="DevExpress.ExpressApp.Office" />
+    <PackageReference Include="DevExpress.ExpressApp.PivotChart" />
+    <PackageReference Include="DevExpress.ExpressApp.PivotGrid" />
+    <PackageReference Include="DevExpress.ExpressApp.ReportsV2" />
+    <PackageReference Include="DevExpress.ExpressApp.Scheduler" />
+    <PackageReference Include="DevExpress.ExpressApp.Security" />
+    <PackageReference Include="DevExpress.ExpressApp.Security.Xpo" />
+    <PackageReference Include="DevExpress.ExpressApp.StateMachine" />
+    <PackageReference Include="DevExpress.ExpressApp.Validation" />
+    <PackageReference Include="DevExpress.ExpressApp.Xpo" />
+    <PackageReference Include="DevExpress.Persistent.Base" />
+    <PackageReference Include="DevExpress.Persistent.BaseImpl.Xpo" />
+    <PackageReference Include="Azure.Identity" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\src\Connectors\Connectors.Memory.Xpo\Connectors.Memory.Xpo.csproj" />
+  </ItemGroup>
+</Project>

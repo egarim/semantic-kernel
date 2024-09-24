@@ -139,5 +139,48 @@
     <PackageVersion Include="Microsoft.ML.OnnxRuntimeGenAI" Version="0.3.0" />
     <PackageVersion Include="Microsoft.ML.OnnxRuntimeGenAI.Cuda" Version="0.3.0" />
     <PackageVersion Include="Microsoft.ML.OnnxRuntimeGenAI.DirectML" Version="0.3.0" />
+
+
+    <!-- Xaf -->
+      <PackageVersion Include="DevExpress.ExpressApp" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.ExpressApp.Chart" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.ExpressApp.CloneObject.Xpo" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.ExpressApp.CodeAnalysis" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.ExpressApp.ConditionalAppearance" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.ExpressApp.Dashboards" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.ExpressApp.Kpi" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.ExpressApp.Notifications" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.ExpressApp.Objects" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.ExpressApp.Office" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.ExpressApp.PivotChart" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.ExpressApp.PivotGrid" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.ExpressApp.ReportsV2" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.ExpressApp.Scheduler" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.ExpressApp.Security" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.ExpressApp.Security.Xpo" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.ExpressApp.StateMachine" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.ExpressApp.Validation" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.ExpressApp.Xpo" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.Persistent.Base" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="DevExpress.Persistent.BaseImpl.Xpo" Version="24.2.1-alpha-24260" />
+      <PackageVersion Include="Azure.Identity" Version="1.11.4" />
+      <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="7.5.1" />
+    <!-- Xaf BLazor -->
+
+    <PackageVersion Include="DevExpress.Drawing.Skia" Version="24.2.1-alpha-24260" />
+    <PackageVersion Include="DevExpress.ExpressApp.Blazor" Version="24.2.1-alpha-24260" />
+    <PackageVersion Include="DevExpress.ExpressApp.CodeAnalysis" Version="24.2.1-alpha-24260" />
+    <PackageVersion Include="DevExpress.ExpressApp.Dashboards.Blazor" Version="24.2.1-alpha-24260" />
+    <PackageVersion Include="DevExpress.ExpressApp.FileAttachment.Blazor" Version="24.2.1-alpha-24260" />
+    <PackageVersion Include="DevExpress.ExpressApp.Notifications.Blazor" Version="24.2.1-alpha-24260" />
+    <PackageVersion Include="DevExpress.ExpressApp.Office.Blazor" Version="24.2.1-alpha-24260" />
+    <PackageVersion Include="DevExpress.ExpressApp.ReportsV2.Blazor" Version="24.2.1-alpha-24260" />
+    <PackageVersion Include="DevExpress.ExpressApp.Scheduler.Blazor" Version="24.2.1-alpha-24260" />
+    <PackageVersion Include="DevExpress.ExpressApp.Security.Xpo" Version="24.2.1-alpha-24260" />
+    <PackageVersion Include="DevExpress.ExpressApp.Validation.Blazor" Version="24.2.1-alpha-24260" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
+   
+    
+    
   </ItemGroup>
 </Project>
