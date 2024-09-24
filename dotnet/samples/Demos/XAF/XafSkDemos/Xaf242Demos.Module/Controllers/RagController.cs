@@ -10,6 +10,7 @@
 #pragma warning disable IDE0039
 #pragma warning disable SKEXP0010
 #pragma warning disable SKEXP0001
+#pragma warning disable CA2007
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,17 +31,53 @@ using Xaf242Demos.Module.BusinessObjects;
 namespace Xaf242Demos.Module.Controllers;
 public class RagController:ViewController
 {
+    private const string embeddingModelId = "text-embedding-3-small";
+    private const string ChatModelId = "gpt-4o";
+    private readonly IServiceProvider serviceProvider;
+    Func<string>? _key;
+    ParametrizedAction SimilaritySearch;
     SimpleAction GenerateEmbeddings;
+    IConfiguration _configuration;
     public RagController()
     {
         this.TargetObjectType = typeof(IRagSource);
         GenerateEmbeddings = new SimpleAction(this, "GenerateEmbeddings", "View");
         GenerateEmbeddings.Execute += GenerateEmbeddings_Execute;
-        
-    }
-    private readonly IServiceProvider serviceProvider;
 
- 
+        SimilaritySearch = new ParametrizedAction(this, "SimilaritySearch", "View", typeof(string));
+        SimilaritySearch.Execute += SimilaritySearch_Execute;
+        
+
+    }
+    protected override void OnActivated()
+    {
+        base.OnActivated();
+        _key = () => Environment.GetEnvironmentVariable("OpenAiTestKey", EnvironmentVariableTarget.Machine);
+        this._configuration = this.serviceProvider.GetService<IConfiguration>();
+    }
+
+    private async void SimilaritySearch_Execute(object sender, ParametrizedActionExecuteEventArgs e)
+    {
+        var parameterValue = (string)e.ParameterCurrentValue;
+        OpenAITextEmbeddingGenerationService embeddingGenerator = GetEmbeddingGenerator(embeddingModelId, _key);
+        SemanticTextMemory textMemory = await GetSemanticMemory(_configuration, embeddingGenerator).ConfigureAwait(false);
+        var currentRagSource = this.View.CurrentObject as IRagSource;
+        IAsyncEnumerable<MemoryQueryResult> answers = textMemory.SearchAsync(
+                    collection: currentRagSource.GetCollectionName(),
+                    query: parameterValue,
+                    limit: 2,
+                    minRelevanceScore: 0.79,
+                    withEmbeddings: true);
+
+        await foreach (var answer in answers)
+        {
+            Debug.WriteLine($"Answer: {answer.Metadata.Text}");
+        }
+
+    }
+
+
+
     // Implement this constructor to support dependency injection.
     [ActivatorUtilitiesConstructor]
     public RagController(IServiceProvider serviceProvider) : this()
@@ -50,37 +87,26 @@ public class RagController:ViewController
     private async void GenerateEmbeddings_Execute(object sender, SimpleActionExecuteEventArgs e)
     {
         List<string> chunks = null;
-        IConfiguration configuration=this.serviceProvider.GetService<IConfiguration>();
-      
-        var currentRagSource=this.View.CurrentObject as IRagSource;
+     
+
+        var currentRagSource = this.View.CurrentObject as IRagSource;
         var OwnerOid = currentRagSource.GetOwnerKey();
         if (currentRagSource != null)
         {
-        
+
             chunks = currentRagSource.GetRecordCollection().ToList();
         }
-        var MemoryCollectionName=currentRagSource.GetCollectionName();
-      
-        string cnx = DevExpress.Xpo.DB.InMemoryDataStore.GetConnectionStringInMemory(true);
-        cnx = configuration.GetConnectionString("ConnectionString");
-        XpoMemoryStore memoryStore = await XpoMemoryStore.ConnectAsync(cnx).ConfigureAwait(false);
-
-        var EmbeddingModelId = "text-embedding-3-small";
-        var ChatModelId = "gpt-4o";
+        var MemoryCollectionName = currentRagSource.GetCollectionName();
 
 
-        var GetKey = () => Environment.GetEnvironmentVariable("OpenAiTestKey", EnvironmentVariableTarget.Machine);
         var kernel = Kernel.CreateBuilder()
-           .AddOpenAIChatCompletion(ChatModelId, GetKey.Invoke())
-           .AddOpenAITextEmbeddingGeneration(EmbeddingModelId, GetKey.Invoke())
+           .AddOpenAIChatCompletion(ChatModelId, _key.Invoke())
+           .AddOpenAITextEmbeddingGeneration(embeddingModelId, _key.Invoke())
            .Build();
 
-        // Create an embedding generator to use for semantic memory.
-        var embeddingGenerator = new OpenAITextEmbeddingGenerationService(EmbeddingModelId, GetKey.Invoke());
+        OpenAITextEmbeddingGenerationService embeddingGenerator = GetEmbeddingGenerator(embeddingModelId, _key);
 
-        // The combination of the text embedding generator and the memory store makes up the 'SemanticTextMemory' object used to
-        // store and retrieve memories.
-        SemanticTextMemory textMemory = new(memoryStore, embeddingGenerator);
+        SemanticTextMemory textMemory = await GetSemanticMemory(_configuration, embeddingGenerator).ConfigureAwait(false);
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         // PART 1: Store and retrieve memories using the ISemanticTextMemory (textMemory) object.
@@ -88,7 +114,6 @@ public class RagController:ViewController
         // This is a simple way to store memories from a code perspective, without using the Kernel.
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         Debug.WriteLine("== PART 1a: Saving Memories through the ISemanticTextMemory object ==");
-
 
 
         for (int i = 0; i < chunks.Count; i++)
@@ -101,5 +126,23 @@ public class RagController:ViewController
 
 
         // Execute your business logic (https://docs.devexpress.com/eXpressAppFramework/112737/).
+    }
+
+    private static OpenAITextEmbeddingGenerationService GetEmbeddingGenerator(string EmbeddingModelId, Func<string> GetKey)
+    {
+        // Create an embedding generator to use for semantic memory.
+        return new OpenAITextEmbeddingGenerationService(EmbeddingModelId, GetKey.Invoke());
+    }
+
+    private static async Task<SemanticTextMemory> GetSemanticMemory(IConfiguration configuration, OpenAITextEmbeddingGenerationService embeddingGenerator)
+    {
+
+        // The combination of the text embedding generator and the memory store makes up the 'SemanticTextMemory' object used to
+        // store and retrieve memories.
+        string cnx = DevExpress.Xpo.DB.InMemoryDataStore.GetConnectionStringInMemory(true);
+        cnx = configuration.GetConnectionString("ConnectionString");
+        XpoMemoryStore memoryStore = await XpoMemoryStore.ConnectAsync(cnx).ConfigureAwait(false);
+        SemanticTextMemory textMemory = new(memoryStore, embeddingGenerator);
+        return textMemory;
     }
 }

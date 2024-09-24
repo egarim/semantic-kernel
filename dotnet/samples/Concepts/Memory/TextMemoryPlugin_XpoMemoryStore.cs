@@ -32,7 +32,7 @@ public class TextMemoryPlugin_XpoMemoryStore(ITestOutputHelper output) : BaseTes
         
         // Xpo Memory Store - using InMemoryDataStore, an in-memory store that is not persisted
         string cnx = DevExpress.Xpo.DB.InMemoryDataStore.GetConnectionStringInMemory(true);
-        cnx = "Integrated Security=SSPI;Pooling=false;Data Source=(localdb)\\mssqllocaldb;Initial Catalog=XpoKernelMemory";
+        //cnx = "Integrated Security=SSPI;Pooling=false;Data Source=(localdb)\\mssqllocaldb;Initial Catalog=XpoKernelMemory";
         XpoMemoryStore store = await XpoMemoryStore.ConnectAsync(cnx);
 
 
