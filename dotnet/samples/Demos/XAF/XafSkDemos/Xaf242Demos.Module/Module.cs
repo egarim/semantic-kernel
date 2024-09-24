@@ -61,7 +61,7 @@ public sealed class Xaf242DemosModule : ModuleBase {
         base.CustomizeTypesInfo(typesInfo);
 
         typesInfo.FindTypeInfo(typeof(XpoDatabaseEntry)).AddAttribute(new DefaultClassOptionsAttribute());
-       
+        typesInfo.FindTypeInfo(typeof(XpoDatabaseEntry)).AddAttribute(new NavigationItemAttribute("RAG"));
         CalculatedPersistentAliasHelper.CustomizeTypesInfo(typesInfo);
     }
 }

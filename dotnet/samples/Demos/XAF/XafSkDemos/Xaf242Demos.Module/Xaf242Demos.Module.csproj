@@ -41,5 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\src\Connectors\Connectors.Memory.Xpo\Connectors.Memory.Xpo.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\Connectors\Connectors.OpenAI\Connectors.OpenAI.csproj" />
   </ItemGroup>
 </Project>
