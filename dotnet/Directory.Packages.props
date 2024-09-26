@@ -179,8 +179,12 @@
     <PackageVersion Include="DevExpress.ExpressApp.Security.Xpo" Version="24.2.1-alpha-24260" />
     <PackageVersion Include="DevExpress.ExpressApp.Validation.Blazor" Version="24.2.1-alpha-24260" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
-   
-    
+
+    <PackageVersion Include="DevExpress.AIIntegration.Azure.OpenAI" Version="24.2.1-alpha-24260" />
+    <PackageVersion Include="DevExpress.AIIntegration.Blazor.Chat" Version="24.2.1-alpha-24260" />
+    <PackageVersion Include="DevExpress.AIIntegration.Blazor.Common" Version="24.2.1-alpha-24260" />
+    <PackageVersion Include="DevExpress.AIIntegration.Web" Version="24.2.1-alpha-24260" />
+    <PackageVersion Include="Markdig" Version="0.37.0" />
     
   </ItemGroup>
 </Project>

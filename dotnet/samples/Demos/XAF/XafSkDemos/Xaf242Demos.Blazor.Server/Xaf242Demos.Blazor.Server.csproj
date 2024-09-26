@@ -45,6 +45,13 @@
     <PackageReference Include="DevExpress.ExpressApp.Security.Xpo"  />
     <PackageReference Include="DevExpress.ExpressApp.Validation.Blazor"  />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer"  />
+
+    <PackageReference Include="DevExpress.AIIntegration.Azure.OpenAI"  />
+    <PackageReference Include="DevExpress.AIIntegration.Blazor.Chat"  />
+    <PackageReference Include="DevExpress.AIIntegration.Blazor.Common"  />
+    <PackageReference Include="DevExpress.AIIntegration.Web"  />
+    <PackageReference Include="Markdig"  />
+    
   </ItemGroup>
   
   <ItemGroup>

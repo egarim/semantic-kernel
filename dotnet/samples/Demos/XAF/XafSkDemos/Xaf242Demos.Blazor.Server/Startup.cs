@@ -1,4 +1,18 @@
-﻿using DevExpress.ExpressApp.Security;
+﻿// Copyright (c) Microsoft. All rights reserved.
+
+#pragma warning disable IDE0003
+#pragma warning disable IDE0009
+#pragma warning disable IDE0040
+#pragma warning disable IDE0055
+#pragma warning disable RCS1036
+#pragma warning disable RCS1037
+#pragma warning disable IDE1006
+#pragma warning disable IDE0039
+#pragma warning disable SKEXP0010
+#pragma warning disable SKEXP0001
+#pragma warning disable CA2007
+
+using DevExpress.ExpressApp.Security;
 using DevExpress.ExpressApp.ApplicationBuilder;
 using DevExpress.ExpressApp.Blazor.ApplicationBuilder;
 using DevExpress.ExpressApp.Blazor.Services;
@@ -8,6 +22,8 @@ using Microsoft.AspNetCore.Components.Server.Circuits;
 using DevExpress.ExpressApp.Xpo;
 using Xaf242Demos.Blazor.Server.Services;
 using DevExpress.Persistent.BaseImpl.PermissionPolicy;
+using OpenAI;
+using DevExpress.AIIntegration;
 
 namespace Xaf242Demos.Blazor.Server;
 
@@ -95,6 +111,19 @@ public class Startup {
                     options.IsSupportChangePassword = true;
                 });
         });
+
+        string OpenAiKey = Environment.GetEnvironmentVariable("OpenAiTestKey");
+        services.AddDevExpressAI((config) => {
+            //var client = new AzureOpenAIClient(
+            //    new Uri(azureOpenAIEndpoint),
+            //    new AzureKeyCredential(azureOpenAIKey));
+
+            //Open Ai models ID are a bit different than azure, Azure=gtp4o OpenAI=gpt-4o
+            var client = new OpenAIClient(new System.ClientModel.ApiKeyCredential(OpenAiKey));
+            config.RegisterChatClientOpenAIService(client, "gpt-4o");
+            config.RegisterOpenAIAssistants(client, "gpt-4o");
+        });
+
         var authentication = services.AddAuthentication(options => {
             options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         });
