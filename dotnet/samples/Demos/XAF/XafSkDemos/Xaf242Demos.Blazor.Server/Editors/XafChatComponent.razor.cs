@@ -16,10 +16,10 @@ namespace Xaf242Demos.Blazor.Server.Editors;
 
 public partial class XafChatComponent:ComponentBase
 {
-    RagDataComponentModel _value;
+    Stream _value;
 
     [Parameter]
-    public RagDataComponentModel Value
+    public Stream Value
     {
         get
         {

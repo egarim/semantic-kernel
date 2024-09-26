@@ -26,7 +26,7 @@ using DevExpress.Persistent.Validation;
 namespace Xaf242Demos.Module.BusinessObjects;
 [DomainComponent]
 [DefaultClassOptions]
-public class RagChat : IXafEntityObject, IRagData/*, IObjectSpaceLink*/, INotifyPropertyChanged
+public class RagChat : IXafEntityObject/*, IObjectSpaceLink*/, INotifyPropertyChanged
 {
     //private IObjectSpace objectSpace;
     private void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -78,17 +78,10 @@ public class RagChat : IXafEntityObject, IRagData/*, IObjectSpaceLink*/, INotify
         }
     }
     
-    public IRagData IRagData
-    {
-        get => this;
-       
-    }
+
     
 
-    public Stream GetDataStream()
-    {
-       return _streamData;
-    }
+ 
     #endregion
 
     #region IObjectSpaceLink members (see https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.IObjectSpaceLink)

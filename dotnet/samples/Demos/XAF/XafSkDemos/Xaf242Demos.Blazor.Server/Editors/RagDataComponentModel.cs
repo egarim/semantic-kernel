@@ -29,15 +29,15 @@ using Xaf242Demos.Module.BusinessObjects;
 namespace Xaf242Demos.Blazor.Server.Editors;
 public class RagDataComponentModel : ComponentModelBase
 {
-    public IRagData Value
+    public Stream Value
     {
-        get => GetPropertyValue<IRagData>();
+        get => GetPropertyValue<Stream>();
         set => SetPropertyValue(value);
     }
 
-    public EventCallback<IRagData> ValueChanged
+    public EventCallback<Stream> ValueChanged
     {
-        get => GetPropertyValue<EventCallback<IRagData>>();
+        get => GetPropertyValue<EventCallback<Stream>>();
         set => SetPropertyValue(value);
     }
 

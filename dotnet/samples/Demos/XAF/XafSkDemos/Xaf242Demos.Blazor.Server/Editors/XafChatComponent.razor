@@ -12,7 +12,7 @@
     {
         await chat.UseAssistantAsync(new OpenAIAssistantOptions(
             $"{Guid.NewGuid().ToString("N")}.pdf",
-           Value.Value.GetDataStream(),
+           Value,
             prompt)
         );
     }

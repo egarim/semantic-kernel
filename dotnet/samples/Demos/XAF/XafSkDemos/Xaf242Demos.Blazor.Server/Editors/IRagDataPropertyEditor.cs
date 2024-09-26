@@ -28,7 +28,7 @@ using Xaf242Demos.Module.BusinessObjects;
 namespace Xaf242Demos.Blazor.Server.Editors;
 
 
-[PropertyEditor(typeof(IRagData), true)]
+[PropertyEditor(typeof(Stream), true)]
 public class IRagDataPropertyEditor : BlazorPropertyEditorBase, IComplexViewItem
 {
     public IRagDataPropertyEditor(Type objectType, IModelMemberViewItem model) : base(objectType, model) { }
@@ -51,7 +51,7 @@ public class IRagDataPropertyEditor : BlazorPropertyEditorBase, IComplexViewItem
 
         var model = new RagDataComponentModel();
 
-        model.ValueChanged = EventCallback.Factory.Create<IRagData>(this, value => {
+        model.ValueChanged = EventCallback.Factory.Create<Stream>(this, value => {
             model.Value = value;
             OnControlValueChanged();
             WriteValue();
@@ -61,7 +61,7 @@ public class IRagDataPropertyEditor : BlazorPropertyEditorBase, IComplexViewItem
     protected override void ReadValueCore()
     {
         base.ReadValueCore();
-        ComponentModel.Value = (IRagData)PropertyValue;
+        ComponentModel.Value = (Stream)PropertyValue;
     }
     protected override object GetControlValueCore() => ComponentModel.Value;
     protected override void ApplyReadOnly()
